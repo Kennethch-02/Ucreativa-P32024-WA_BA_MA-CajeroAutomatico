@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>  
+    <title>Cajero - Banco Horizonte</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header text-center">
+                <h2>Banco Horizonte</h2>
+            </div>
+            <div class="card-body">
+                <form onsubmit="extraerDinero(event)">
+                    <div class="form-group">
+                        <label for="pin">Número de pin</label>
+                        <input type="password" class="form-control" id="pin" placeholder="xxxx" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="monto">Monto</label>
+                        <input type="number" class="form-control" id="monto" placeholder="ej $5000" required/>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Sacar</button>
+                </form>
+                <hr>
+                <form onsubmit="depositarDinero(event)">
+                    <div class="form-group">
+                        <label for="pin-dep">Número de pin</label>
+                        <input type="password" class="form-control" id="pin-dep" placeholder="xxxx" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="monto-dep">Monto</label>
+                        <input type="number" class="form-control" id="monto-dep" placeholder="ej $5000" required/>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Depositar</button>
+                </form>
+                <hr>
+                <form onsubmit="consultarSaldo(event)">
+                    <div class="form-group">
+                        <label for="pin-cons">Número de pin</label>
+                        <input type="password" class="form-control" id="pin-cons" placeholder="xxxx" required/>
+                    </div>
+                    <button type="submit" class="btn btn-info btn-block">Consultar Saldo</button>
+                </form>
+                <hr>
+                <form onsubmit="cambiarPin(event)">
+                    <div class="form-group">
+                        <label for="pin-actual">PIN Actual</label>
+                        <input type="password" class="form-control" id="pin-actual" placeholder="xxxx" required/>
+                    </div>
+                    <div class="form-group">
+                        <label for="pin-nuevo">Nuevo PIN</label>
+                        <input type="password" class="form-control" id="pin-nuevo" placeholder="xxxx" required/>
+                    </div>
+                    <button type="submit" class="btn btn-warning btn-block">Cambiar PIN</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var pinCorrecto = 5555;
+        var montoTotal = 250000;
+
+        function extraerDinero(event) {
+            event.preventDefault();
+            var pin = document.getElementById("pin").value;
+            var monto = parseFloat(document.getElementById("monto").value);
+
+            if (monto > 0 && pin == pinCorrecto) {
+                if (montoTotal >= monto) {
+                    montoTotal -= monto;
+                    alert(`Has extraído $${monto}`);
+                    alert(`El monto restante es $${montoTotal}`);
+                } else {
+                    alert(`No hay fondos suficientes - $${montoTotal}`);
+                }
+            } else if (monto <= 0) {
+                alert("El monto debe ser mayor a 0");
+            } else {
+                alert("El pin no es correcto");
+            }
+        }
+
+        function depositarDinero(event) {
+            event.preventDefault();
+            var pin = document.getElementById("pin-dep").value;
+            var monto = parseFloat(document.getElementById("monto-dep").value);
+
+            if (monto > 0 && pin == pinCorrecto) {
+                montoTotal += monto;
+                alert(`Has depositado $${monto}`);
+                alert(`El monto total ahora es $${montoTotal}`);
+            } else if (monto <= 0) {
+                alert("El monto debe ser mayor a 0");
+            } else {
+                alert("El pin no es correcto");
+            }
+        }
+
+        function consultarSaldo(event) {
+            event.preventDefault();
+            var pin = document.getElementById("pin-cons").value;
+
+            if (pin == pinCorrecto) {
+                alert(`Tu saldo actual es $${montoTotal}`);
+            } else {
+                alert("El pin no es correcto");
+            }
+        }
+
+        function cambiarPin(event) {
+            event.preventDefault();
+            var pinActual = document.getElementById("pin-actual").value;
+            var pinNuevo = document.getElementById("pin-nuevo").value;
+
+            if (pinActual == pinCorrecto && pinNuevo.length === 4 && !isNaN(pinNuevo)) {
+                pinCorrecto = pinNuevo;
+                alert("Tu PIN ha sido cambiado exitosamente");
+            } else if (pinActual != pinCorrecto) {
+                alert("El PIN actual no es correcto");
+            } else {
+                alert("El nuevo PIN debe ser de 4 dígitos");
+            }
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
